@@ -92,12 +92,39 @@ def generate_time_features(df: pd.DataFrame):
     df.drop(columns=["datetime"], inplace=True)
 
 
-def generate_all_features_df(df: pd.DataFrame, lags: list):
+def normalize_features(df, window):
+    """
+    Normalize each column of features by minusing the average and divide by std
+    """
+    for col in df.columns:
+        if col == "datetime":
+            continue
+        df[col] = (df[col] - talib.EMA(df[col], window)) / talib.STDDEV(df[col], window)
+
+
+def generate_cossin_time_features(df):
+    """
+    Transform time columns to cos and sin
+    """
+    print("Generating cossin time features...")
+    df["datetime"] = pd.to_datetime(df["datetime"])
+    df['time_hour_sin'] = talib.SIN(df['datetime'].dt.hour / 24 * 2 * np.pi)
+    df['time_hour_cos'] = talib.COS(df['datetime'].dt.hour / 24 * 2 * np.pi)
+    df['time_minute_sin'] = talib.SIN(df['datetime'].dt.minute / 60 * 2 * np.pi)
+    df['time_minute_cos'] = talib.COS(df['datetime'].dt.minute / 60 * 2 * np.pi)
+    df['time_day_of_week_sin'] = talib.SIN(df['datetime'].dt.dayofweek / 7 * 2 * np.pi)
+    df['time_day_of_week_cos'] = talib.COS(df['datetime'].dt.dayofweek / 7 * 2 * np.pi)
+    df['time_day_of_month_sin'] = talib.SIN(df['datetime'].dt.day / 30 * 2 * np.pi)
+    df['time_day_of_month_cos'] = talib.COS(df['datetime'].dt.day / 30 * 2 * np.pi)
+
+
+def generate_all_features_df(df: pd.DataFrame, lags: list, normalization_window=1000):
     warnings.filterwarnings("ignore")
     generate_og_features_df(df, lags)
     generate_mom_features_df(df, lags)
     generate_math_features_df(df, lags)
-    generate_time_features(df)
+    normalize_features(df, normalization_window)
+    generate_cossin_time_features(df)
     df.dropna(inplace=True)
 
     # sort by name
