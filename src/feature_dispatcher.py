@@ -33,7 +33,9 @@ class FeatureDispatcher:
                 function = partial(ta_map["MACDFIX"], signalperiod=int(func[2]))
                 self.func_pool[int(func[0])] = function
                 continue
+
             function = ta_map[func[1]]
+            
             if "timeperiod" in function.parameters:
                 function = partial(function, timeperiod=int(func[2]))
             elif "fastperiod" in function.parameters:
