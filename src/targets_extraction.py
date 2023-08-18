@@ -14,7 +14,7 @@ def prepare_desired_pos(df, lag=50, multiplier=10):
     df.dropna(inplace=True)
     df["desired_pos_change"] = (df[f"{lag}m_ret"] * multiplier).apply(int)
     df["pos_change_signal"] = pd.qcut(
-        df["desired_pos_change"], 5, ["strong sell", "sell", "meh", "buy", "strong buy"]
+        df["desired_pos_change"], 5, ["strong sell", "sell", "meh", "buy", "strong buy"],
     )
     df["desired_pos_rolling"] = (
         df["desired_pos_change"].rolling(lag, min_periods=1).sum().apply(int)

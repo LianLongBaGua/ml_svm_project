@@ -1,5 +1,11 @@
-from sklearn import tree
-from sklearn import ensemble
+from sklearn.svm import (
+    LinearSVC,
+    LinearSVR,
+    NuSVC,
+    NuSVR,
+    SVC,
+    SVR,
+)
 from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import (
     GridSearchCV,
@@ -26,6 +32,10 @@ PARAM_GRID_TREE = {
     "max_features": ["sqrt", "log2", None],
 }
 
+PARAM_GRID_SVM = {
+    "C":"
+}
+
 GENETIC_PARAM_GRID_TREE = {
 "max_depth": Integer(5, 6),
 "min_samples_split": Integer(100, 200),
@@ -37,24 +47,9 @@ Models and CV's to use
 """
 
 model_combos = {
-    "DecisionTree": (tree.DecisionTreeClassifier(), tree.DecisionTreeRegressor()),
-    "RandomForest": (ensemble.RandomForestClassifier(), ensemble.RandomForestRegressor()),
-    "ExtraTrees": (ensemble.ExtraTreesClassifier(), ensemble.ExtraTreesRegressor()),
-    "AdaBoost": (ensemble.AdaBoostClassifier(), ensemble.AdaBoostRegressor()),
-    "GradientBoosting": (ensemble.GradientBoostingClassifier(), ensemble.GradientBoostingRegressor()),
-}
-
-models = {
-    "DecisionTreeClassifier": tree.DecisionTreeClassifier(),
-    "RandomForestClassifier": ensemble.RandomForestClassifier(),
-    "ExtraTreesClassifier": ensemble.ExtraTreesClassifier(),
-    "AdaBoostClassifier": ensemble.AdaBoostClassifier(),
-    "GradientBoostingClassifier": ensemble.GradientBoostingClassifier(),
-    "DecisionTreeRegressor": tree.DecisionTreeRegressor(),
-    "RandomForestRegressor": ensemble.RandomForestRegressor(),
-    "ExtraTreesRegressor": ensemble.ExtraTreesRegressor(),
-    "AdaBoostRegressor": ensemble.AdaBoostRegressor(),
-    "GradientBoostingRegressor": ensemble.GradientBoostingRegressor(),
+    "Linear": (LinearSVC, LinearSVR),
+    "Nu": (NuSVC, NuSVR),
+    "SVC": (SVC, SVR),
 }
 
 cross_validation = {

@@ -116,7 +116,7 @@ def generate_cossin_time_features(df):
     df['time_day_of_week_cos'] = talib.COS(df['datetime'].dt.dayofweek / 7 * 2 * np.pi)
     df['time_day_of_month_sin'] = talib.SIN(df['datetime'].dt.day / 30 * 2 * np.pi)
     df['time_day_of_month_cos'] = talib.COS(df['datetime'].dt.day / 30 * 2 * np.pi)
-
+    df.drop(columns=["datetime"], inplace=True)
 
 def generate_all_features_df(df: pd.DataFrame, lags: list, normalization_window=1000):
     warnings.filterwarnings("ignore")

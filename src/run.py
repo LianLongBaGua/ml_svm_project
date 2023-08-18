@@ -18,7 +18,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model",
         type=str,
-        default="RandomForest",
+        default="SVM",
         help="type of model to use for training",
     )
 
@@ -66,13 +66,11 @@ if __name__ == "__main__":
     preselected_feats = X.shape[1]
     X = feature_selector.fit_transform(X, y["pos_change_signal"])
     print("Feature selection complete: dropped features: ", X.shape[1] - preselected_feats)
-    print("features selected: ", feature_selector.feature_names_in_)
+    print("features selected: ", X.columns)
     print("Saving feature names selected to feature_names.txt...")
     with open("feature_names.txt", "w") as f:
-        i = 0
-        for string in feature_selector.feature_names_in_:
-            f.write(str(i) + "_" + string + ",")
-            i += 1
+        for i, string in enumerate(X.columns):
+            f.write(str(i-1) + "_" + string + ",")
 
     ts_cv = TimeSeriesSplit(n_splits=5)
 
